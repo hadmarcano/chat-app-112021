@@ -2,9 +2,13 @@
 require("dotenv").config();
 const http = require("http");
 const { Server } = require("socket.io");
-const Filter = require('bad-words');
+const Filter = require("bad-words");
 const express = require("express");
 const morgan = require("morgan");
+const {
+  generateMessage,
+  generateLocationMessage,
+} = require("./utils/messages");
 
 // Import Routes
 //
@@ -34,32 +38,29 @@ io.on("connection", (socket) => {
   // listen event
   socket.on("disconnect", () => {
     // console.log("user disconnected");
-    io.emit('message', 'An user has left!')
+    io.emit("message", generateMessage("An user has left!"));
   });
 
-  socket.on('sendMessage',(message, callback)=>{
+  socket.on("sendMessage", (message, callback) => {
     const filter = new Filter();
 
-    if(filter.isProfane(message)){
+    if (filter.isProfane(message)) {
       return callback("Profanity is not allowed!");
     }
 
-    io.emit('message',message);
+    io.emit("message", generateMessage(message));
     // Event Acknowledgement
     callback();
   });
 
-  socket.on('sendLocation',(message,callback)=>{
-    io.emit('message', `https://www.google.cl/maps?q=${message.latitude},${message.longitude}`);
+  socket.on("sendLocation", (message, callback) => {
+    io.emit("locationMessage", generateLocationMessage(message));
     callback();
-
   });
 
   // Emit events
-  const message = "Welcome!";
-  socket.emit("message", message);
-  socket.broadcast.emit('message','A new user has joined!')
-
+  socket.emit("message", generateMessage("Welcome!"));
+  socket.broadcast.emit("message", generateMessage("A new user has joined!"));
 });
 
 // App Listen
