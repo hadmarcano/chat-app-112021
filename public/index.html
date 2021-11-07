@@ -9,6 +9,18 @@
   <body>
     <h1>Chat APP by HéctorDíaz.</h1></body><br>
     <!-- <button id="increment">+1</button> -->
+    <form id="send">
+      <h1>Send Message</h1>
+      <div class="field">
+        <label for="content">Content:</label>
+        <input type="text" id="content" name="content" placeholder="Enter your message" />
+        <small></small>
+      </div>
+     
+      <button type="submit">Send</button>
+    </form>
+    <br>
+    <button id="send-location">Send Location</button>
     <script src="/socket.io/socket.io.js"></script>
     <script src="./js/chat.js"></script>
   </body>
