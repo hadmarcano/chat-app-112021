@@ -29,13 +29,26 @@ app.use(morgan("dev"));
 app.use("/static", express.static("public"));
 
 // Emit events socket-io library
+// (io.emit) send data to every people connected.
 // (socket.emit) send data only an specific connection
+// (socket.broadcast.emit) send data to all people connected except me.
 // socket.emit("countUpdated", count);
 
 // Socket-io events
 io.on("connection", (socket) => {
   console.log("new web socket connection");
   // listen event
+
+  socket.on("join", ({ username, room }) => {
+    socket.join(room);
+    
+    // Emit events
+    //io.to.emit, socket.broadcast.to.emit
+    socket.emit("message", generateMessage("Welcome!"));
+    socket.broadcast.to(room).emit("message", generateMessage(`${username} has joined!`));
+
+  });
+
   socket.on("disconnect", () => {
     // console.log("user disconnected");
     io.emit("message", generateMessage("An user has left!"));
@@ -57,10 +70,6 @@ io.on("connection", (socket) => {
     io.emit("locationMessage", generateLocationMessage(message));
     callback();
   });
-
-  // Emit events
-  socket.emit("message", generateMessage("Welcome!"));
-  socket.broadcast.emit("message", generateMessage("A new user has joined!"));
 });
 
 // App Listen
