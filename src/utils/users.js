@@ -31,35 +31,35 @@ const addUser = ({id, username, room})=>{
     users.push(user);
     return {user};
 
-    const removeUser = (id)=>{
-        const index = users.findIndex((user)=>user.id === id);
-
-        if(index !== -1){
-            return users.splice(index,1)[0];
-        }
-    }
-
 };
 
-// Testing addUser function
-// addUser({
-//     id:22,
-//     username: 'Andrew  ',
-//     room: '   South Philly'
-// });
+const removeUser = (id)=>{
+    const index = users.findIndex((user)=>user.id === id);
 
-// console.log(users);
+    if(index !== -1){
+        return users.splice(index,1)[0];
+    }
+};
 
-// const res = addUser({
-//     id:33,
-//     username: 'andrew',
-//     room: 'south philly'
-// });
 
-// console.log(res);
+const getUsers = (id) =>{
+    const index = users.findIndex((user)=> user.id === id);
 
-// Testing removed function
-// const removedUser = removeUser(22);
+    if(index !== -1) return users[index];
 
-// console.log(removedUser);
-// console.log(users);
+    return undefined
+};
+
+
+const getUsersInRoom = (room)=>{
+    const usersByRoom = users.filter((user)=> user.room ===  room.trim().toLowerCase());
+    return usersByRoom;
+}
+
+
+module.exports = {
+    addUser,
+    removeUser,
+    getUsers,
+    getUsersInRoom
+};
