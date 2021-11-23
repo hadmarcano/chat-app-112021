@@ -42,7 +42,7 @@ const removeUser = (id)=>{
 };
 
 
-const getUsers = (id) =>{
+const getUser = (id) =>{
     const index = users.findIndex((user)=> user.id === id);
 
     if(index !== -1) return users[index];
@@ -60,6 +60,6 @@ const getUsersInRoom = (room)=>{
 module.exports = {
     addUser,
     removeUser,
-    getUsers,
+    getUser,
     getUsersInRoom
 };
